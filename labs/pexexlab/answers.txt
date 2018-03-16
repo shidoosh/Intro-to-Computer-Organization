@@ -1,0 +1,45 @@
+1. Explain why the instructions in the trace did not produce the correct mathematical result. Which instructions caused the problem, exactly?
+
+The instructions in the trace did not produce the correct result due to the lea instruction.
+ 544dfc 	4a 8d 04 a5 02 00 00 00	lea 0x2(,%r12,4),%rax	rax=7fffffff73ab3b42 
+%r12 does hold the correct result. However, because of the arguments of the lea instruction, the result stored in rax is dfffffffdceaced0 multiplied by 4 and offset by 2, thus 7fffffff73ab3b42 is loaded into %rax, which is the wrong result. In doing such arithmetic, the instruction causes overflow such that the wrong result cannot be represented entirely in 64 bits.   
+
+
+2. Explain why the shell command emacs -Q -batch -eval '(print most-negative-fixnum)' outputs -2305843009213693952. Where did the number come from? Explain in terms of the Emacs source code.
+
+In Emacs source code, in line 831 in lisp.h, most-negative-fixnum is defined as #define MOST_NEGATIVE_FIXNUM (-1 - MOST_POSITIVE_FIXNUM). And, MOST_POSITIVE_FIXNUM defined as #define MOST_POSITIVE_FIXNUM (EMACS_INT_MAX >> INTTYPEBITS). EMACS_INT_MAX is 2^63-1 and INTTYPEBITS has a value of 2 (GCTYPE-1 = 2). Plugging in these values into the MOST_NEGATIVE_FIXNUM, we get (-1 - 9223372036854775807 / 4)==-2305843009213693952. Thus, -1 - MOST_POSITIVE_FIXNUM is -2305843009213693952, which is MOST_NEGATIVE_FIXNUM, hence the value printed. 
+
+3. Explain why the shell command emacs -Q -batch -eval '(print (* most-positive-fixnum most-positive-fixnum most-positive-fixnum most-positive-fixnum))' outputs only 1.
+
+This shell command outputs only 1 because when we multiply most-positive-fixnum (which is 1fffffffffffffff, line 830, lisp.h)) by itself 4 times, we get ffffffffffffffe0000000000000017ffffffffffffff8000000000000001. This huge product is truncated to the lower 64 bits in effort to be represented, which is 000000000000001 in hex. Thus, it outputs 1. 
+
+4. The Emacs executable was compiled with GCC's -O2 option. Suppose it had also been compiled with -fwrapv. Explain any problems Emacs would run into, or if there would not be a problem explain why not.
+
+There is no problem compiling with -fwrapv because the Emacs executable would wrap around accordingly as seen in the "Examine integer overflow handling" portion of this lab. Though, the result would be wrong and no signal of whether or not there was overflow would be indicated to the user. 
+
+5. There is a recently-discovered security vulnerability in Emacs 25.2, which you can exercise by running emacs -Q -batch -eval '(print (format-time-string "%Y-%m-%d %H:%M:%S %Z" nil (concat (make-string 1000 ?X) "0")))'. Briefly describe the bug's low-level manifestation by crashing Emacs, using GDB's backtrace command, and following up with any other GDB commands that you think might be of interest. 
+
+Using the commands to debug provided on the spec: 
+
+	gdb ~eggert/bin64/bin/emacs-25.2
+
+	-Q -batch -eval '(print (format-time-string "%Y-%m-%d %H:%M:%S %Z" nil (	concat (make-string 1000 ?X) "0")))'
+
+At this point, the program immediately crashed, displaying the error message
+ * Error in `/u/cs/fac/eggert/bin64/bin/emacs-25.2': double free or corruption (!prev): 0x00000000014854e0 *
+This already suggests freeing something that had already been freed. To get a closer look, I backtraced the function call using the command
+	bt
+This displayed the following addresses: 
+#0  0x00007ffff165f1f7 in raise () at /lib64/libc.so.6
+#1  0x00007ffff16608e8 in abort () at /lib64/libc.so.6
+#2  0x00007ffff169ef47 in __libc_message () at /lib64/libc.so.6
+#3  0x00007ffff16a6619 in _int_free () at /lib64/libc.so.6
+#4  0x00000000005d37d8 in tzfree (tz=<optimized out>, tz@entry=0x14854e0)
+    at time_rz.c:194
+..
+..
+..
+
+The #0,1, 2, 3 all suggest an error by outputting a message and aborting the function call due to a crash. The preceding lines #3 and #4 seemed to correspond to the initial crash message. Thus, I stepped into tzfree as indicated by #4, and found that at line #194, as indicated at the end of line #4 in the backtrace, the C-source code line is free(tz), calling free@plt. This attempts to double free an object, thus outputting an error and crashing program.  
+
+I stepped through the assembly using continue (c) and next (n). 

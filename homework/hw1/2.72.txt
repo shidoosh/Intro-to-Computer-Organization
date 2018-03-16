@@ -1,0 +1,6 @@
+A. The conditional statement always succeeds because of the substraction 
+operation with an operand of type int, maxbytes, and calling the function sizeofthat returns size_t, which is unsigned. Thus, the whole operation will always
+have an unsigned result, thus always satisfying the conditional such that the 
+result will never be less than 0. 
+
+B. By using comparison operators and exploiting the fact that sizeof will never return anything less than zero, we can fix the conditional statement to desired performance, like so:  if(sizeof(val)<=maxbytes).   

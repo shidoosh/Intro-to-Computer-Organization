@@ -1,0 +1,21 @@
+A. (float) x == (float) dx; 
+Will always yield 1. 
+int->float == int->double->float
+Will result in same bit representation on both sides in all cases.
+
+B. dx-dy == (double)(x-y); 
+Will not always yield 1. 
+If x == INT_MIN and y is any positive integer, the RHS will overflow such that x-y is a positive number (fwrapv).. Though, the LHS will produce the correct value, since it has greater range. 
+
+C. (dx+dy) + dz == dx + (dy + dz); 
+Will always yield 1. 
+The range of the double type allows all possible values to return correct result. 
+
+
+D. (dx*dy) * dz == dx * (dy * dz); 
+Will not always yield 1. 
+If x = 2^31 + 1, y = 2^31 + 1, and z = 2^31 + 2^9, the RHS will not compute to the same value as that of the LHS. 
+
+E. dx / dx == dz / dz 
+Will not always yield 1. 
+dx = 0.. NaN! NaNs cannot be evaluated by binary operators such as ==. 

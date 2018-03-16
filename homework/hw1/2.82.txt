@@ -1,0 +1,28 @@
+A. (x<y) == (-x>-y)
+This does NOT always yield 1. 
+Argument: Plugging in INT_MIN for x and a y such that INT_MIN < y < INT_MAX 
+yields 0 (The negation of INT_MIN is itself!). 
+
+B. ((x+y)<<4)+y-x == 17 * y + 15 * x
+This ALWAYS yields 1. 
+Mathematical Principle: The result of a left shift is equivalent to the value shifted * 2^number of shifts. Applying this principle here, we see that the left hand side is the same expression as the right hand side. Therefore, for any value of x and for any value of y, the result will be the same on both sides, thus always yielding 1.
+
+C. ~x + ~y + 1 == ~(x+y)
+This ALWAYS yields 1. 
+Mathematical Principle: Applying the negations to their associated expressions on both sides, it results in (-x-1)+(-y-1)+1=-(x+y)-1. Distributing the negative on the right and simplifying the left, we get -x-y-1=-x-y-1.Therefore, for any value of x and for any value of y, the result will be the same on both sides, thus always yielding 1.
+
+D. (ux - uy) == -(unsigned)(y - x)
+This ALWAYS yields 1. 
+Mathematical Principle: Negating the unsigned we follow the rule such that it is corresponds to 2^32-x when x is greater than 0, and to just x when it is 0. In doing so, we get ux + 2^32-uy == ux + 2^32-uy. Therefore, for any value of x and for any value of y, the result will be the same on both sides, thus always yielding 1.
+
+E. ((x >> 2) << 2) <= x
+This ALWAYS yields 1. 
+Mathematical Principle: The right shift will move x's bits to the right twice, losing the two original rightmost bits. Then, the left shift will move the twonex rightmost bits to their original position, but replace the two right most position with 0s. This is confirms the comparison such that by losing the magnitude of the rightmost positions' values, it will be less than its original value, or, in the case that the two original rightmost bits were both 0, it would remain the same, hence equal to as well.
+  
+F. x >> 1 == (ux >> 1) + (ux & (-1 << 31))
+This ALWAYS yields 1. 
+Mathematical Principle: We need to consider both arithmetic and logical shifting on x as it is signed. Assuming that x's most significant bit is 1, the shift of ux will be logical, resulting in [01....]. Then, (ux & (-1 << 31)) results in [10...0] in this case. By addition, the most significant bit is restored, therefore equivalent to the left expression. Assuming x's most significant bit is 0, the ux shuft will behave the same, however differing in result such that it would be [0.....]. (-1 << 31) manipulate the bits to 0 since the assumed most significant bit is 0. Finally, by addition, we find the both sides are equvalent always, thus always yielding 1. 
+
+G. x%128 == (x&127)
+This does NOT always yield 1. 
+Argument: Plugging in -1 for x results in a negative integer. (x&127_ can never be signed on the bit level, therefore the whole statement does not always yield 1. 

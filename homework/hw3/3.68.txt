@@ -1,0 +1,5 @@
+3.68: What are the values of A and B?
+
+A = 9, B = 5.
+
+By noting the alignment and offset of str2, we note that B must be stored such that it takes up less than or equal to 8 bytes, since the char array[B] is stored first and int t is stored at at an offset of 8, deduced by analysis of the assembly code. Similarly, S[A] must be take and less than or equal to 10 bytes considering long u is stored at the 32nd byte, and the int t takes up 4 bytes from 8 to 12. That leaves 20 bytes of space for S[A], but S[A] is of type short, thus leaving us with 10 bytes to work with. Then, considering str1, we see that long y is stored at byte 184. Utilizing our canonical formula for determining array size, we note that the 4*A*B amounts to the byte space that precedes the long y. We also know that the array size must be greater than or equal to 176 because otherwise the long y would have been placed at this position. Thus, 176 <= 4*A*B <= 184. Dividing by 4 we get 44 <= A*B <= 46. Finally, considering our conditions we determined for A and B (A<=10, B<=8), we conclude that the only values that make this inequality true is A = 9, B = 5.  

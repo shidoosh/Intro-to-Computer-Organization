@@ -1,0 +1,7 @@
+Log:
+
+For the first portion of this lab, I used the gdb  ~eggert/bin64/bin/emacs-25.2. Then, I traced through Ftimes by setting a breakpoint, and stepping through using  si. At each instruction that affected eithe rmemory or a stored result in the respective register(s), I used the gdb command info registers (the desired register) to follow what was occuring in the assembly code. In doing so, I pinpointed the instruction that caused the incorrect result to be outputted. 
+
+For the second part, I made a testovf.c with the source code provided on the spec. I compiled this file 3 separate times to a .s, to a .o, and then objdump each .o to compare and contrast the assembly code. 
+
+Finally, for the answers.txt, a few questions required to view Emacs source code. In order to do so, I used the command cd ~eggert/src/gnu/emacs-25.2/src/, listed all the files, and searched through the ones I wanted (lisp.h, data.c). For question 5, I ran the function call given and used the bt command to backtrace through the code. I found that the error message was a good indicator of where to find the crash. From there, I stepped through the functions respective to the outputted error message, and found the error that caused the crash.  

@@ -1,0 +1,3 @@
+A. &A[i][j][k] = Xa + L(i*S*T + j*T + k)
+B. We know S is 5 and T is 13 from the assembly code and our derived formula from part A. Though, we must consider that the given source code is returning the SIZE of the array. Following the assembly code, we get that the expression executed with the corresponding passed values is 8(13j + 65i + k) = 3640. Dividing both sides by 8 we get 13j + 65i + k = 455 in longs. With this new value on the left hand side, and considering we are returning sizeof, we can simply use our known values of S and T to isolate R, multiply each of these 3 values and set it equal to 455: R * S * T = 455. R * 13 * 5 = 455. R * 65 = 455. 455/65 = R. R = 7. 
+ R = 7; S = 5; T = 13. 

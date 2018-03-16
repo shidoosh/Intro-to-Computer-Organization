@@ -1,0 +1,14 @@
+3.70: 
+
+A. Offsets of...
+   e1.p = 0
+   e1.y = 8
+   e2.x = 0
+   e2.next = 8
+
+B. Total bytes the stucture requires is 16 bytes because a size of a union is the max size of its members. 
+
+C. up->x = *(up->next->p) - (up->next->y);
+
+ We observe that the C code is substracting 2 values and storing it into one of the members of the union that *up points at. However, it is ambiguous at this point as to what values are being accessed, subtracted, and assigned. By assessing the assembly code, we can deduce that %rax is holding members of struct e1, and %rdi is holding members of struct e2; now, the task is to determine which members are being accessed when. We can then consider the IMM offsets applied to %rdi and %rax to see which variable is displaced at that location in memory. Ultimately, we note that the substraction is being stored into a long in e2, thus x. The subtraction itself is the difference of dereferencing a pointer from e2 that accesses the a pointer (because we are indeed dereferencing), and a pointer from e2 that simply contains the long value, hence y.  
+                                       up->x = *(up->next->p) - (up->next->y);  

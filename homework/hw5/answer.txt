@@ -1,0 +1,15 @@
+12.17
+A. The program in Figure 12.46 has a bug. The thread is supposed to sleep for one second and then print a string. However, when we run it on our system, nothing prints. Why? 
+	The exit function in the main function kills the thread before it can execute printing the string 
+	"Hello, world!." Thus, only the body of the main function is executed and exits, before executing the
+	thread routine (i.e. the peer thread is killed before printing). 
+B. You can fix this bug by replacing the exit function in line 10 with one of two different Pthreads function calls. Which ones? 
+	- pthread_join: will reap the peer thread directly
+	- pthread_exit: will call exit without waiting for the peer thread to terminate
+
+
+12.25
+In the prethreaded concurrent echo server in Figure 12.28, each thread calls the echo_cnt function (Figure 12.29). Is echo_cnt safe? Is it reentrant? Why or why not? 
+	echo_cnt is safe because it it only calls thread-safe functions and uses a mutex to restrict access to the 	   global variable byte_cnt that is shared. However, because of this sharing of a global variable, echo_cnt is	      not reentrant. 
+
+

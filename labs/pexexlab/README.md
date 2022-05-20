@@ -28,3 +28,15 @@ Compile the following function:
     return n + 9223372036854775807 < n;
   }
 for the x86-64 in three ways: (1) with -O2, (2) with -O2 -fwrapv, (3) with -O2 -fsanitize=undefined. Compare the resulting assembly-language files, and describe and justify the differences that you see. Put your description into a plain ASCII text file testovf.txt.
+
+# A few more questions
+Answer the following questions, in a plain text file answers.txt:
+
+Explain why the instructions in the trace did not produce the correct mathematical result. Which instructions caused the problem, exactly?
+Explain why the shell command emacs -Q -batch -eval '(print most-negative-fixnum)' outputs -2305843009213693952. Where did the number come from? Explain in terms of the Emacs source code.
+Explain why the shell command emacs -Q -batch -eval '(print (* most-positive-fixnum most-positive-fixnum most-positive-fixnum most-positive-fixnum))' outputs only 1.
+The Emacs executable was compiled with GCC's -O2 option. Suppose it had also been compiled with -fwrapv. Explain any problems Emacs would run into, or if there would not be a problem explain why not.
+There is a recently-discovered security vulnerability in Emacs 25.2, which you can exercise by running emacs -Q -batch -eval '(print (format-time-string "%Y-%m-%d %H:%M:%S %Z" nil (concat (make-string 1000 ?X) "0")))'. Briefly describe the bug's low-level manifestation by crashing Emacs, using GDB's backtrace command, and following up with any other GDB commands that you think might be of interest.
+
+
+

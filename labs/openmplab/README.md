@@ -7,22 +7,15 @@ As usual, keep a log in the file openmplab.txt of what you do in the lab so that
 # Files
 Your lab handout contains the following files:
 
-func.h
-Header with typedefs and function prototypes.
-func.c
-Primary source file (edit and submit this).
-filter.c
-Filtering function file.
-main.c
-Source file containing main() and initialization code.
-util.h
-util.c Files for utility functions.
-Makefile
-Build script.
-correct.txt
-Correct output data (for default inputs).
-seed.txt
-Input file
+* func.h: Header with typedefs and function prototypes.
+* func.c: Primary source file (edit and submit this).
+* filter.c: Filtering function file.
+* main.c: Source file containing main() and initialization code.
+* util.h: util.c Files for utility functions.
+* Makefile: Build script.
+* correct.txt: Correct output data (for default inputs).
+* seed.txt: Input file
+
 You should edit only func.c.
 
 # Grading

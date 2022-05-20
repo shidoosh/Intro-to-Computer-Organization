@@ -36,7 +36,8 @@ Your grade for this assignment will be proportional to the amount of speedup you
 * To compile with memory tracing enabled: make omp MTRACE=1
 * To check that your output is correct: make check
 * To check for memory leaks after a run: make checkmem
-* To remove the executable and output files: make clean
+* To remove the executable and output files: make clean\
+
 The generated executable is named filter. By default, it will generate a file output.txt. It also outputs the time taken to run the filter function. If your output is not correct, a message will be output saying your output differs from correct.txt. When you add the make operand MTRACE=1, all calls to malloc and free are logged and saved to the file mtrace.out. When you run make checkmem, that file will be analyzed to verify that all allocated memory was eventually freed. This last step requires tools that are available on the SEASnet GNU/Linux servers.
 
 # Code Overview

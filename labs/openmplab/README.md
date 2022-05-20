@@ -29,22 +29,14 @@ You should edit only func.c.
 Your grade for this assignment will be proportional to the amount of speedup you achieve. For full credit, you must achieve a 3.5× speedup. Extra credit will be awarded for speedup beyond that amount. To get any credit, your code must produce the same output as the original code. In addition, for each memory leak in your code, your overall grade will be reduced by 1%. A memory leak is defined as a region of memory that was allocated but never freed.
 
 # Compiling and Running
-To compile normally:
-make seq
-To compile with OpenMP enabled:
-make omp
-To compile using a different source file:
-make omp SRC=try2.c
-To compile with gprof enabled:
-make seq GPROF=1
-To compile with memory tracing enabled:
-make omp MTRACE=1
-To check that your output is correct:
-make check
-To check for memory leaks after a run:
-make checkmem
-To remove the executable and output files:
-make clean
+* To compile normally: make seq
+* To compile with OpenMP enabled: make omp
+* To compile using a different source file: make omp SRC=try2.c
+* To compile with gprof enabled: make seq GPROF=1
+* To compile with memory tracing enabled: make omp MTRACE=1
+* To check that your output is correct: make check
+* To check for memory leaks after a run: make checkmem
+* To remove the executable and output files: make clean
 The generated executable is named filter. By default, it will generate a file output.txt. It also outputs the time taken to run the filter function. If your output is not correct, a message will be output saying your output differs from correct.txt. When you add the make operand MTRACE=1, all calls to malloc and free are logged and saved to the file mtrace.out. When you run make checkmem, that file will be analyzed to verify that all allocated memory was eventually freed. This last step requires tools that are available on the SEASnet GNU/Linux servers.
 
 # Code Overview
